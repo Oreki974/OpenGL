@@ -27,5 +27,17 @@
     <ClCompile Include="src\triangles3.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\shaders-interpolated.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application_indexbuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="res\shaders\Basic.shader" />
   </ItemGroup>
 </Project>
