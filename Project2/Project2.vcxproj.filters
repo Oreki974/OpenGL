@@ -36,8 +36,17 @@
     <ClCompile Include="src\Application_indexbuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\Application_glgeterror.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VAO.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vao_test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="res\shaders\Basic.shader" />
+    <None Include="res\shaders\Basic.shader" />
   </ItemGroup>
 </Project>

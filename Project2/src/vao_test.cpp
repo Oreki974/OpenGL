@@ -98,14 +98,16 @@ int main()
 	if (!glfwInit())
 		return -1;
 
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
 		return -1;
 	}
-
-
 
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
@@ -122,15 +124,33 @@ int main()
 		-0.5f, 0.5f //3
 	};
 
+	float p2[]{
+		-0.5f,-0.5f,
+		-0.5f,0.0f,
+		0.0f,0.0f
+	};
+
 	unsigned int indices[] = {
 		0,1,2,
 		2,3,0
 	};
 
+	unsigned int vao;
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
 	unsigned int buffer;
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, 4 *2 * sizeof(float), positions, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+
+	unsigned int buffer2;
+	glGenBuffers(1, &buffer2);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer2);
+	glBufferData(GL_ARRAY_BUFFER, 3 * 2 * sizeof(float), p2, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
@@ -138,7 +158,7 @@ int main()
 	unsigned int ibo;
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 *sizeof(unsigned int), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
 	ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
 
@@ -153,6 +173,12 @@ int main()
 	int location = glGetUniformLocation(shader, "u_Color");
 	//ASSERT(location != -1);
 
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
 	float r = 0.0f;
 	float increment = 0.05f;
 
@@ -162,7 +188,15 @@ int main()
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		glUseProgram(shader);
 		glUniform4f(location, r, 0.3f, 0.8f, 1.0f);
+
+		glBindVertexArray(vao);
+
+		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+		glBindBuffer(GL_ARRAY_BUFFER, buffer2);
+
+
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
 		if (r > 1.0f)
