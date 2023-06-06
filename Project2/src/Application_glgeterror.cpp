@@ -8,10 +8,17 @@
 #include<sstream>
 #include<intrin.h>
 
-#define ASSERT(x) if (!(x)) __debugbreak();
-#define GLCall(x) GLClearError();\
-	x;\
-	ASSERT(GLLogCall())
+
+
+#define ASSERT(x) if (!(x)) __debugbreak()
+
+
+#define GLCall(x) do { \
+    GLClearError();\
+    x;\
+    ASSERT(GLLogCall(#x, __FILE__, __LINE__));\
+ } while (0)
+
 
 static void GLClearError()
 {
@@ -173,6 +180,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		GLCall(glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr));
+
 		
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

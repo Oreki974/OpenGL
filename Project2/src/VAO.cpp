@@ -7,6 +7,9 @@
 #include<string>
 #include<sstream>
 
+#include "Renderer.h"
+#include "IndexBuffer.h"
+#include "VertexBuffer.h"
 
 struct ShaderProgramSource
 {
